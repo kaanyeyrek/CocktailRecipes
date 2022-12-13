@@ -1,4 +1,4 @@
-Recipes
+Recipes App
 
 🛠 Technologies ->
 
@@ -10,7 +10,7 @@ Recipes
 
 - SDWebImage
 
-Architecture ->
+⚡️ Architecture ->
 
 MVVM Design Pattern
 
