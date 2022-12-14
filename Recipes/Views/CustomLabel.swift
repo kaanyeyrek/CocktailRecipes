@@ -16,8 +16,8 @@ class CustomLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     fileprivate func config() {
-        text = "What is in your Kitchen?"
-        font = UIFont(name: "HelveticaNeue-Medium", size: 25)
+        text = "What is your favorite cocktail?"
+        font = UIFont(name: "HelveticaNeue-Medium", size: 20)
         layer.cornerRadius = 8
         clipsToBounds = true
         textColor = .black
@@ -34,6 +34,7 @@ class TitleLabel: UILabel {
     fileprivate func config() {
         textColor = .black
         layer.cornerRadius = 8
+        textAlignment = .center
         clipsToBounds = true
         numberOfLines = 0
         font = UIFont(name: "HelveticaNeue-Medium", size: 15)

@@ -18,7 +18,7 @@ class CustomImageView: UIImageView {
     fileprivate func config() {
         layer.cornerRadius = 8
         layer.masksToBounds = true
-        contentMode = .scaleAspectFill
+        contentMode = .scaleToFill
     }
 }
     

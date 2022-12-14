@@ -14,9 +14,20 @@ protocol HomeViewModelInterface {
     func viewDidLoad()
     func viewWillAppear()
     func handleBackButton()
+    var data: [Drink] { get set }
+    var dataManagerInterface: DataManagerInterface { get }
+    func fetchData()
+    func changeLoading()
 }
 final class HomeViewModel {
     weak var view: HomeViewInterface?
+    let dataManagerInterface: DataManagerInterface
+    var data: [Drink] = []
+    private var isloading = false
+    
+    init() {
+        dataManagerInterface = DataManager()
+    }
 }
 //MARK: - HomeViewModelInterface Delegate
 extension HomeViewModel: HomeViewModelInterface {
@@ -33,14 +44,25 @@ extension HomeViewModel: HomeViewModelInterface {
     func handleBackButton() {
         view?.resignFirstResponder()
     }
-    func numberOfItemsInSections(section: Int) -> Int {
-        if section == 0 {
-            return 12
+    func fetchData() {
+        changeLoading()
+        dataManagerInterface.parse { [weak self] (response) in
+            DispatchQueue.main.async {
+                self?.changeLoading()
+                self?.data = response ?? []
+                self?.view?.saveDatas(values: self?.data ?? [])
+            }
         }
-        return 10
+    }
+    func changeLoading() {
+        isloading = !isloading
+        view?.changeLoading(isLoad: isloading)
+    }
+    func numberOfItemsInSections(section: Int) -> Int {
+       return data.count
     }
     var numberOfSections: Int {
-        12
+        8
     }
  }
 

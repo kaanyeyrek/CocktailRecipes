@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import SDWebImage
+
 protocol FoodCollectionViewCellInterface: AnyObject {
     func setUI()
     func setSubviews()
     func setLayout()
-    func configure()
+    func configure(with model: Drink)
 }
 class FoodCollectionViewCell: UICollectionViewCell {
     fileprivate let view = UIView()
@@ -46,13 +48,14 @@ extension FoodCollectionViewCell: FoodCollectionViewCellInterface {
     func setLayout() {
         view.anchor(top: contentView.topAnchor, leading: contentView.leadingAnchor, bottom: contentView.bottomAnchor, trailing: contentView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 150, height: 200))
         contentView.sendSubviewToBack(view)
-        image.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 200, height: 150))
-        label.anchor(top: view.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 30, bottom: 5, right: 5), size: .init(width: 50, height: 40))
+        image.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 12, bottom: 0, right: 5), size: .init(width: 200, height: 150))
+        label.anchor(top: view.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 50, height: 40))
         secondLabel.anchor(top: view.bottomAnchor, leading: nil, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 5, right: 20), size: .init(width: 80, height: 40))
     }
-    public func configure() {
-        image.image = #imageLiteral(resourceName: "banner")
-        label.text = "Mozzarella Food\n243Kcal"
-        secondLabel.text = " ⏱️ 35 min "
+    func configure(with model: Drink) {
+        label.text = model.strDrink
+        guard let url = URL(string: model.strDrinkThumb) else { return }
+        image.sd_setImage(with: url)
+        
     }
 }
