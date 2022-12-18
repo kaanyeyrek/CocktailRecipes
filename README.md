@@ -2,7 +2,7 @@ Cocktail Recipes App photos coming soon...
 
 🛠 Technologies ->
 
-- UIKit
+- UIKit - Programmaticaly
 
 - JSON / API
 
@@ -14,7 +14,7 @@ MVVM Design Pattern
 
 SOLİD Principles
 
-Protocol Oriented
+Protocol - Oriented Programming
 
 
 
