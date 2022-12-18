@@ -16,14 +16,16 @@ protocol HomeViewInterface: AnyObject {
    func collectionReload()
    func resignFirstResponder()
    func changeLoading(isLoad: Bool)
-   func saveDatas(values: [Drink])
+   func handleViewModelOutput(_ output: CocktailConstractsOutput)
+   func navigate(to Route: CocktailListViewRoute)
    static func createLayout() -> UICollectionViewCompositionalLayout
 }
-class HomeViewController: UIViewController {
+
+final class HomeViewController: UIViewController {
     private enum Constant {
         static let identifier = "FoodCollectionViewCell"
     }
-    private lazy var data: [Drink] = []
+    private lazy var data: [CocktailPresentation] = []
     private lazy var viewModel: HomeViewModelInterface? = HomeViewModel()
     fileprivate let questionLabel = CustomLabel()
     fileprivate let searchBar = UISearchBar()
@@ -47,7 +49,7 @@ extension HomeViewController: HomeViewInterface {
     func setLayout() {
         questionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 30, bottom: 0, right: 0), size: .init(width: 50, height: 100))
         questionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -300).isActive = true
-        searchBar.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 25, bottom: 0, right: 25), size: .init(width: 100, height: 50))
+        searchBar.anchor(top: nil, leading: view.leadingAnchor, bottom: collectionView.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 25, bottom: 20, right: 25), size: .init(width: 100, height: 50))
         searchBar.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -230).isActive = true
         indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         indicator.startAnimating()
@@ -77,7 +79,6 @@ extension HomeViewController: HomeViewInterface {
         gesture.cancelsTouchesInView = false
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(gesture)
-      
     }
     func resignFirstResponder() {
         searchBar.resignFirstResponder()
@@ -88,10 +89,18 @@ extension HomeViewController: HomeViewInterface {
     func changeLoading(isLoad: Bool) {
         isLoad ? indicator.startAnimating() : indicator.stopAnimating()
     }
-    func saveDatas(values: [Drink]) {
-        DispatchQueue.main.async {
-            self.data = values
-            self.collectionReload()
+    func handleViewModelOutput(_ output: CocktailConstractsOutput) {
+        switch output {
+        case .showCocktailList(let cocktail):
+            self.data = cocktail
+            collectionReload()
+        }
+    }
+    func navigate(to Route: CocktailListViewRoute) {
+        switch Route {
+        case .detail(let viewModel):
+            let vc = CocktailDetailBuilder.make(with: viewModel)
+            navigationController?.pushViewController(vc, animated: false)
         }
     }
 //MARK: - Action buttons
@@ -107,7 +116,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.anchor(top: searchBar.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-        collectionView.heightAnchor.constraint(equalToConstant: 650).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 500).isActive = true
     }
     static func createLayout() -> UICollectionViewCompositionalLayout { 
         // Item
@@ -120,7 +129,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         verticalItem.contentInsets.bottom = 5
         // Group
         let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), repeatingSubitem: verticalItem, count: 2)
-        let doubleStackGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/3), heightDimension: .absolute(200)), subitems: [item,verticalGroup])
+        let doubleStackGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(200)), subitems: [item,verticalGroup])
         // Sections
         let section = NSCollectionLayoutSection(group: doubleStackGroup)
         section.orthogonalScrollingBehavior = .continuous
@@ -135,7 +144,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.identifier, for: indexPath) as? FoodCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(with: data[indexPath.item])
+        let model = data[indexPath.item]
+        cell.configure(with: model)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -149,10 +159,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let vc = UIViewController()
-        vc.view.backgroundColor = .systemRed
-        present(vc, animated: false)
+        viewModel?.didSelectItem(at: indexPath.item)
     }
-    
 }
 

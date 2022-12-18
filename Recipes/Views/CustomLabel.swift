@@ -17,7 +17,7 @@ class CustomLabel: UILabel {
     }
     fileprivate func config() {
         text = "What is your favorite cocktail?"
-        font = UIFont(name: "HelveticaNeue-Medium", size: 20)
+        font = UIFont(name: "HelveticaNeue-Medium", size: 23)
         layer.cornerRadius = 8
         clipsToBounds = true
         textColor = .black
@@ -37,6 +37,6 @@ class TitleLabel: UILabel {
         textAlignment = .center
         clipsToBounds = true
         numberOfLines = 0
-        font = UIFont(name: "HelveticaNeue-Medium", size: 15)
+        font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
 }

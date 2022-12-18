@@ -8,14 +8,14 @@
 import Foundation
 // Service
 protocol DataManagerInterface {
-    func parse(completion: @escaping ([Drink]?) -> ())
+    func parse(completion: @escaping ([Drink]?)->())
 }
 //MARK: - Data parsing // Service
 final class DataManager: DataManagerInterface {
     static let shared = DataManager()
     init() {}
-    func parse(completion: @escaping ([Drink]?) -> ()) {
-        let apiKey = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=Champagne_flute")
+    func parse(completion: @escaping ([Drink]?)->()) {
+        let apiKey = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a")
         URLSession.shared.dataTask(with: apiKey!) { data, response, error in
             if error != nil {
                 print("failed parse")

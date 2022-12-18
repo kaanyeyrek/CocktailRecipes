@@ -12,7 +12,7 @@ protocol FoodCollectionViewCellInterface: AnyObject {
     func setUI()
     func setSubviews()
     func setLayout()
-    func configure(with model: Drink)
+    func configure(with model: CocktailPresentation)
 }
 class FoodCollectionViewCell: UICollectionViewCell {
     fileprivate let view = UIView()
@@ -52,9 +52,9 @@ extension FoodCollectionViewCell: FoodCollectionViewCellInterface {
         label.anchor(top: view.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 50, height: 40))
         secondLabel.anchor(top: view.bottomAnchor, leading: nil, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 5, right: 20), size: .init(width: 80, height: 40))
     }
-    func configure(with model: Drink) {
-        label.text = model.strDrink
-        guard let url = URL(string: model.strDrinkThumb) else { return }
+    func configure(with model: CocktailPresentation) {
+        label.text = model.title
+        guard let url = URL(string: model.image) else { return }
         image.sd_setImage(with: url)
         
     }

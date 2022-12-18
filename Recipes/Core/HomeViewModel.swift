@@ -14,11 +14,12 @@ protocol HomeViewModelInterface {
     func viewDidLoad()
     func viewWillAppear()
     func handleBackButton()
-    var data: [Drink] { get set }
     var dataManagerInterface: DataManagerInterface { get }
     func fetchData()
     func changeLoading()
+    func didSelectItem(at index: Int)
 }
+
 final class HomeViewModel {
     weak var view: HomeViewInterface?
     let dataManagerInterface: DataManagerInterface
@@ -47,10 +48,12 @@ extension HomeViewModel: HomeViewModelInterface {
     func fetchData() {
         changeLoading()
         dataManagerInterface.parse { [weak self] (response) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.changeLoading()
-                self?.data = response ?? []
-                self?.view?.saveDatas(values: self?.data ?? [])
+                self.changeLoading()
+                self.data = response ?? []
+                let presentations = self.data.map({ CocktailPresentation(model: $0) })
+                self.notify(.showCocktailList(presentations))
             }
         }
     }
@@ -58,11 +61,20 @@ extension HomeViewModel: HomeViewModelInterface {
         isloading = !isloading
         view?.changeLoading(isLoad: isloading)
     }
-    func numberOfItemsInSections(section: Int) -> Int {
-       return data.count
-    }
     var numberOfSections: Int {
-        8
+        5
+    }
+    func numberOfItemsInSections(section: Int) -> Int {
+         data.count
+    }
+    func didSelectItem(at index: Int) {
+       let models = data[index]
+       let viewModel = DetailsViewModel(model: models)
+        view?.navigate(to: .detail(viewModel))
+    }
+    //Helper
+    func notify(_ output: CocktailConstractsOutput) {
+        view?.handleViewModelOutput(output)
     }
  }
 

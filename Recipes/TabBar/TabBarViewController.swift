@@ -20,7 +20,7 @@ class TabBarViewController: UITabBarController {
         let favoritesVC = FavoritesViewController()
         let addNewRecipeVC = AddNewRecipeViewController()
         
-        homeVC.title = "Search"
+        homeVC.title = "Home"
         categoriesVC.title = "Categories"
         favoritesVC.title = "Favorites"
         addNewRecipeVC.title = "New Recipe"

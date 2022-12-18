@@ -11,6 +11,7 @@ protocol FoodCellViewModelInterface {
     var view: FoodCollectionViewCellInterface? { get set }
     func override()
 }
+
 final class FoodCellViewModel {
     weak var view: FoodCollectionViewCellInterface?
 }

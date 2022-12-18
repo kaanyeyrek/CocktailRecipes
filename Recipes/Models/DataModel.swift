@@ -14,4 +14,8 @@ struct Drink: Codable {
     let strDrink: String
     let strDrinkThumb: String
     let idDrink: String
+    let strInstructions: String
+    let strIngredient1: String
+    let strIngredient2: String
+    let strIngredient3: String?
 }
