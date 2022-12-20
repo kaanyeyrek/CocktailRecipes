@@ -12,7 +12,7 @@ Cocktail Recipes App photos coming soon...
 
 MVVM Design Pattern
 
-SOLİD Principles
+SOLID Principles
 
 Protocol - Oriented Programming
 
