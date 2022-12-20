@@ -18,19 +18,17 @@ protocol HomeViewInterface: AnyObject {
    func changeLoading(isLoad: Bool)
    func handleViewModelOutput(_ output: CocktailConstractsOutput)
    func navigate(to Route: CocktailListViewRoute)
-   static func createLayout() -> UICollectionViewCompositionalLayout
+   func cocktailCollectionRegister()
+   func registerCategoryCell()
 }
 
 final class HomeViewController: UIViewController {
-    private enum Constant {
-        static let identifier = "FoodCollectionViewCell"
-    }
     private lazy var data: [CocktailPresentation] = []
     private lazy var viewModel: HomeViewModelInterface? = HomeViewModel()
     fileprivate let questionLabel = CustomLabel()
     fileprivate let searchBar = UISearchBar()
     fileprivate let indicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    fileprivate let collectionView = UICollectionView(frame: .zero, collectionViewLayout: HomeViewController.createLayout())
+    fileprivate var collectionView: UICollectionView?
 //MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,7 +47,7 @@ extension HomeViewController: HomeViewInterface {
     func setLayout() {
         questionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 30, bottom: 0, right: 0), size: .init(width: 50, height: 100))
         questionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -300).isActive = true
-        searchBar.anchor(top: nil, leading: view.leadingAnchor, bottom: collectionView.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 25, bottom: 20, right: 25), size: .init(width: 100, height: 50))
+        searchBar.anchor(top: nil, leading: view.leadingAnchor, bottom: collectionView?.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 15, bottom: 20, right: 15), size: .init(width: 100, height: 50))
         searchBar.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -230).isActive = true
         indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         indicator.startAnimating()
@@ -57,7 +55,6 @@ extension HomeViewController: HomeViewInterface {
     func addSubviews() {
         view.addSubview(questionLabel)
         view.addSubview(searchBar)
-        view.addSubview(collectionView)
         view.addSubview(indicator)
     }
     func setSearchBar() {
@@ -84,7 +81,7 @@ extension HomeViewController: HomeViewInterface {
         searchBar.resignFirstResponder()
     }
     func collectionReload() {
-        collectionView.reloadData()
+        collectionView?.reloadData()
     }
     func changeLoading(isLoad: Bool) {
         isLoad ? indicator.startAnimating() : indicator.stopAnimating()
@@ -111,30 +108,25 @@ extension HomeViewController: HomeViewInterface {
 //MARK: - UICollectionView Delegate
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func configCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        guard let collectionView = collectionView else { return }
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(FoodCollectionViewCell.self, forCellWithReuseIdentifier: Constant.identifier)
+        view.addSubview(collectionView)
+        collectionView.register(HeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: Constant.headerIdentifier)
+        collectionView.register(CategoryHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: Constant.categoryHeaderIdentifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.anchor(top: searchBar.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-        collectionView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 650).isActive = true
     }
-    static func createLayout() -> UICollectionViewCompositionalLayout { 
-        // Item
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-        item.contentInsets.trailing = 5
-        item.contentInsets.bottom = 5
-       // Second item
-        let verticalItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)))
-        verticalItem.contentInsets.trailing = 5
-        verticalItem.contentInsets.bottom = 5
-        // Group
-        let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), repeatingSubitem: verticalItem, count: 2)
-        let doubleStackGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2), heightDimension: .absolute(200)), subitems: [item,verticalGroup])
-        // Sections
-        let section = NSCollectionLayoutSection(group: doubleStackGroup)
-        section.orthogonalScrollingBehavior = .continuous
-        // Return
-        return UICollectionViewCompositionalLayout(section: section)
+    func cocktailCollectionRegister() {
+        collectionView?.register(CocktailCollectionViewCell.self,
+                                forCellWithReuseIdentifier: Constant.identifier)
+    }
+    func registerCategoryCell() {
+        collectionView?.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: Constant.categoryIdentifier)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel!.numberOfItemsInSections(section: section)
@@ -143,23 +135,48 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         viewModel!.numberOfSections
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.identifier, for: indexPath) as? FoodCollectionViewCell else { return UICollectionViewCell() }
         let model = data[indexPath.item]
+        if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.categoryIdentifier, for: indexPath) as? CategoryCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(with: model)
+            return cell
+        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.identifier, for: indexPath) as? CocktailCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(with: model)
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.section == 0 {
+            return .init(width: (view.frame.width - 20) / 3, height: 70)
+        }
+        let width: CGFloat = (view.frame.width - 10) / 2
+        return .init(width: width, height: width)
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0, left: 0, bottom: 0, right: 0)
+        if section == 0 {
+            return .init(top: 15, left: 15, bottom: 15, right: 15)
+        }
+        return .init(top: 15, left: 0, bottom: 0, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 1
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 1
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         viewModel?.didSelectItem(at: indexPath.item)
     }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if indexPath.section == 0 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: Constant.categoryHeaderIdentifier, for: indexPath) as! CategoryHeaderCollectionReusableView
+            return header
+        }
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: Constant.headerIdentifier, for: indexPath) as! HeaderCollectionView
+        return header
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return .init(width: view.frame.width, height: 180)
+    }
 }
-

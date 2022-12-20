@@ -39,6 +39,8 @@ extension HomeViewModel: HomeViewModelInterface {
         view?.addSubviews()
         view?.setLayout()
         view?.configCollectionView()
+        view?.cocktailCollectionRegister()
+        view?.registerCategoryCell()
         view?.tapGesture()
         view?.setSearchBar()
 }
@@ -61,12 +63,8 @@ extension HomeViewModel: HomeViewModelInterface {
         isloading = !isloading
         view?.changeLoading(isLoad: isloading)
     }
-    var numberOfSections: Int {
-        5
-    }
-    func numberOfItemsInSections(section: Int) -> Int {
-         data.count
-    }
+    var numberOfSections: Int { 2 }
+    func numberOfItemsInSections(section: Int) -> Int { data.count }
     func didSelectItem(at index: Int) {
        let models = data[index]
        let viewModel = DetailsViewModel(model: models)

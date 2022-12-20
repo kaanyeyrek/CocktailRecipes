@@ -10,6 +10,6 @@ import Foundation
 extension CocktailPresentation {
     
     convenience init(model: Drink) {
-        self.init(title: model.strDrink, image: model.strDrinkThumb)
+        self.init(title: model.strDrink, image: model.strDrinkThumb, category: model.strCategory)
     }
 }

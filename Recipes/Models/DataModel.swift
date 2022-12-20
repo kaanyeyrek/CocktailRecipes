@@ -18,4 +18,5 @@ struct Drink: Codable {
     let strIngredient1: String
     let strIngredient2: String
     let strIngredient3: String?
+    let strCategory: String
 }

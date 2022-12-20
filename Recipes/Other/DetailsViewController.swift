@@ -65,7 +65,6 @@ extension DetailsViewController: DetailsViewInterface {
         label.anchor(top: image.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10), size: .init(width: 50, height: 150))
         label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30).isActive = true
         info.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10) , size: .init(width: 100, height: 80))
-        info.sizeToFit()
         info.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20).isActive = true
         headerButton.anchor(top: info.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 10, right: 0), size: .init(width: 120, height: 40))
         headerButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 85).isActive = true

@@ -7,16 +7,16 @@
 
 import Foundation
 
-protocol FoodCellViewModelInterface {
-    var view: FoodCollectionViewCellInterface? { get set }
+protocol CocktailCellViewModelInterface {
+    var view: CocktailCollectionViewCellInterface? { get set }
     func override()
 }
 
-final class FoodCellViewModel {
-    weak var view: FoodCollectionViewCellInterface?
+final class CocktailCellViewModel {
+    weak var view: CocktailCollectionViewCellInterface?
 }
 //MARK: - FoodCellViewModelInterface Delegate
-extension FoodCellViewModel: FoodCellViewModelInterface {
+extension CocktailCellViewModel: CocktailCellViewModelInterface {
 //LifeCycle
     func override() {
         view?.setUI()
