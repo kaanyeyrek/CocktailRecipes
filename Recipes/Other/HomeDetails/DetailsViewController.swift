@@ -19,7 +19,7 @@ final class DetailsViewController: UIViewController {
     fileprivate let image = CustomImageView()
     fileprivate let label = TitleLabel()
     fileprivate let info = TitleLabel()
-    fileprivate let headerButton = CustomButton()
+    fileprivate let headerButton = CustomButton(title: "Ingredients:")
     fileprivate let materialLabel = TitleLabel()
     fileprivate let materialLabel2 = TitleLabel()
     fileprivate let materialLabel3 = TitleLabel()
@@ -66,16 +66,16 @@ extension DetailsViewController: DetailsViewInterface {
         label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30).isActive = true
         info.anchor(top: label.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 10, left: 10, bottom: 10, right: 10) , size: .init(width: 100, height: 80))
         info.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20).isActive = true
-        headerButton.anchor(top: info.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 10, right: 0), size: .init(width: 120, height: 40))
+        headerButton.anchor(top: info.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 120, height: 40))
         headerButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 85).isActive = true
         
-        materialLabel.anchor(top: headerButton.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 0), size: .init(width: view.frame.width, height: 50))
-        materialLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 140).isActive = true
+        materialLabel.anchor(top: headerButton.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 0), size: .init(width: view.frame.width, height: 50))
+        materialLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 130).isActive = true
         
         materialLabel2.anchor(top: headerButton.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 0), size: .init(width: view.frame.width, height: 50))
-        materialLabel2.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 160).isActive = true
+        materialLabel2.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 150).isActive = true
         
         materialLabel3.anchor(top: headerButton.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 0), size: .init(width: view.frame.width, height: 50))
-        materialLabel3.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 180).isActive = true
+        materialLabel3.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 170).isActive = true
     }
 }

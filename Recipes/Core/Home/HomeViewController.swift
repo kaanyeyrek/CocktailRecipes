@@ -45,7 +45,7 @@ final class HomeViewController: UIViewController {
 //MARK: - HomeViewInterface Delegate
 extension HomeViewController: HomeViewInterface {
     func setLayout() {
-        questionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 30, bottom: 0, right: 0), size: .init(width: 50, height: 100))
+        questionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 0), size: .init(width: 50, height: 100))
         questionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -300).isActive = true
         searchBar.anchor(top: nil, leading: view.leadingAnchor, bottom: collectionView?.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 15, bottom: 20, right: 15), size: .init(width: 100, height: 50))
         searchBar.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -230).isActive = true
@@ -58,7 +58,7 @@ extension HomeViewController: HomeViewInterface {
         view.addSubview(indicator)
     }
     func setSearchBar() {
-        searchBar.placeholder = "Type your ingredients"
+        searchBar.placeholder = "Type your best cocktail..."
         searchBar.searchTextField.leftViewMode = .always
         searchBar.searchTextField.returnKeyType = .done
         searchBar.autocorrectionType = .no
@@ -69,7 +69,7 @@ extension HomeViewController: HomeViewInterface {
         searchBar.searchTextField.backgroundColor = .white
         searchBar.backgroundImage = UIImage()
         searchBar.layer.borderWidth = 1
-        searchBar.layer.borderColor = UIColor.systemMint.cgColor
+        searchBar.layer.borderColor = UIColor.black.cgColor
     }
     func tapGesture() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleBackButton))
@@ -159,10 +159,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return .init(top: 15, left: 0, bottom: 0, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 3
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 3
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)

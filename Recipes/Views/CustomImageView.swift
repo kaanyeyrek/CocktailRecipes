@@ -16,7 +16,7 @@ class CustomImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     fileprivate func config() {
-        layer.cornerRadius = 8
+        layer.cornerRadius = 10
         layer.masksToBounds = true
         contentMode = .scaleToFill
     }

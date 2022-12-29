@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// HomeVC Constracts
 enum CocktailConstractsOutput: Equatable {
     case showCocktailList([CocktailPresentation])
 }

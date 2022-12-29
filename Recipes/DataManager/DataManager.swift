@@ -15,7 +15,7 @@ final class DataManager: DataManagerInterface {
     static let shared = DataManager()
     init() {}
     func parse(completion: @escaping ([Drink]?)->()) {
-        let apiKey = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a")
+        let apiKey = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=c")
         URLSession.shared.dataTask(with: apiKey!) { data, response, error in
             if error != nil {
                 print("failed parse")

@@ -9,9 +9,10 @@ import UIKit
 
 class CustomButton: UIButton {
 
-    init() {
+    init(title: String) {
         super.init(frame: .zero)
         config()
+        setTitle(title, for: .normal)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -20,9 +21,8 @@ class CustomButton: UIButton {
         layer.cornerRadius = 8
         layer.masksToBounds = true
         contentMode = .scaleToFill
-        backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
-        setTitle("Ingredient:", for: .normal)
-        titleLabel?.font = .boldSystemFont(ofSize: 20)
+        backgroundColor = .black
+        titleLabel?.font = UIFont(name: "Rubik-Medium", size: 18)
         titleLabel?.textAlignment = .center
     }
 }

@@ -18,6 +18,7 @@ protocol HomeViewModelInterface {
     func fetchData()
     func changeLoading()
     func didSelectItem(at index: Int)
+    func notify(_ output: CocktailConstractsOutput)
 }
 
 final class HomeViewModel {
@@ -54,7 +55,7 @@ extension HomeViewModel: HomeViewModelInterface {
             DispatchQueue.main.async {
                 self.changeLoading()
                 self.data = response ?? []
-                let presentations = self.data.map({ CocktailPresentation(model: $0) })
+                let presentations = self.data.map({ CocktailPresentation(model: $0)})
                 self.notify(.showCocktailList(presentations))
             }
         }

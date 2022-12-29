@@ -12,4 +12,6 @@ public enum Constant {
     static let headerIdentifier = "HeaderCollectionView"
     static let categoryIdentifier = "CategoryCollectionViewCell"
     static let categoryHeaderIdentifier = "CategoryHeaderCollectionReusableView"
+    static let categoriesTable = "CategoriesTableViewCell"
+    static let myListCollection = "MyListCollectionViewCell"
 }
