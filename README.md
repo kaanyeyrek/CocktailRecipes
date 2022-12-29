@@ -1,20 +1,34 @@
 Cocktail Recipes App photos coming soon...
 
-🛠 Technologies ->
+👨🏻‍💻 Database ->
 
-- UIKit - Programmaticaly
+* Core Data 
 
-- JSON / API
+🛠 Technologies and Features ->
 
-- SDWebImage
+* UIKit - Programmaticaly
+
+* JSON / API
+
+* Swift Package Manager
+
+* SDWebImage
+
+* ProgressHUD
+
+* Custom Font
+
+* Pagination
 
 ⚡️ Architecture ->
 
-MVVM Design Pattern
+* MVVM Design Pattern
 
-SOLID Principles
+* SOLID Principles
 
-Protocol - Oriented Programming
+* Protocol - Oriented Programming
+
+
 
 
 
